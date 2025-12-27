@@ -1,24 +1,20 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { useState } from 'react';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  // In a real app, this would be managed by Firebase, Supabase, or a custom Backend
+  const [userRole, setUserRole] = useState<'patient' | 'nurse' | null>(null);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      {/* 1. Auth Flow */}
+      <Stack.Screen name="(auth)/index" options={{ title: 'Login' }} />
+      
+      {/* 2. Patient Flow */}
+      <Stack.Screen name="(patient)/index" options={{ title: 'OncoGuard Patient' }} />
+      
+      {/* 3. Nurse Flow */}
+      <Stack.Screen name="(nurse)/index" options={{ title: 'Nurse Portal' }} />
+    </Stack>
   );
 }
