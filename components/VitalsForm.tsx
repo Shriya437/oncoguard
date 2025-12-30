@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export const VitalsForm = () => {
+// Define the Interface for props
+interface VitalsFormProps {
+  onSubmit: (data: any) => void;
+}
+
+export const VitalsForm = ({ onSubmit }: VitalsFormProps) => {
   const [vitals, setVitals] = useState({ heartRate: '', spo2: '', temperature: '' });
 
   const handleSubmit = () => {
@@ -11,15 +16,8 @@ export const VitalsForm = () => {
       return;
     }
 
-    const payload = {
-      heartRate: Number(heartRate),
-      spo2: Number(spo2),
-      temperature: Number(temperature),
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log("Submitting Vitals:", payload);
-    Alert.alert("Success", "Vitals submitted to backend");
+    // This calls the function in your index.tsx
+    onSubmit(vitals);
   };
 
   return (
@@ -47,7 +45,7 @@ export const VitalsForm = () => {
         onChangeText={(t) => setVitals({ ...vitals, temperature: t })}
       />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Submit Vitals</Text>
+        <Text style={styles.buttonText}>Submit Vitals to AI</Text>
       </TouchableOpacity>
     </View>
   );
